@@ -1,0 +1,27 @@
+{
+  "name": "01-node-basics",
+  "version": "1.0.0",
+  "description": "Hello world",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js",
+    "dev": "nodemon localhost 8080"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Velmor99/goit-nodejs-course.git"
+  },
+  "author": "Lee Roman",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Velmor99/goit-nodejs-course/issues"
+  },
+  "homepage": "https://github.com/Velmor99/goit-nodejs-course#readme",
+  "devDependencies": {
+    "nodemon": "^2.0.4"
+  },
+  "dependencies": {
+    "yargs": "^16.0.3"
+  }
+}
