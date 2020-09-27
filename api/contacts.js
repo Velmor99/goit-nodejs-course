@@ -1,5 +1,5 @@
 const express = require('express');
-const cors = require('cors')
+// const cors = require('cors')
 const contactsRoutes = require('./contacts/contacts.routes');
 const morgan = require('morgan');
 const fs =  require('fs');
@@ -26,7 +26,7 @@ module.exports = class ContactsAPI {
     }
     initMiddlewares() {
         this.server.use(express.json());
-        this.server.use(cors({original: 'http:localhost:3000'}))
+        // this.server.use(cors({original: 'http:localhost:3000'}))
         this.server.use(
             morgan(function (tokens, req, res) {
             return [
