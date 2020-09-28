@@ -1,0 +1,11 @@
+GET /api/contacts 200 910 - 8.712 ms   {}
+GET /api/contacts/9 500 1315 - 3.774 ms   {}
+GET /api/contacts/9 500 1315 - 10.076 ms   {}
+GET /api/contacts/9 200 79 - 7.338 ms   {}
+GET /api/contacts/9 500 1315 - 5.903 ms   {}
+GET /api/contacts/9 200 79 - 7.223 ms   {}
+POST /api/contacts 500 1328 - 8.392 ms application/json  {"name":"Juli","email":"juli@mail.com","phone":"44-55"}
+POST /api/contacts 500 289 - 12.052 ms application/json  {"name":"Juli","email":"juli@mail.com","phone":"44-55"}
+POST /api/contacts 200 63 - 21.961 ms application/json  {"name":"Juli","email":"juli@mail.com","phone":"44-55"}
+DELETE /api/contacts/10 200 29 - 19.553 ms   {}
+PATCH /api/contacts/3 200 87 - 21.855 ms application/json  {"phone":"333222"}

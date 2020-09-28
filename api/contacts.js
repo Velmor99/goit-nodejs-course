@@ -4,7 +4,7 @@ const contactsRoutes = require('./contacts/contacts.routes');
 const morgan = require('morgan');
 const fs =  require('fs');
 const path = require('path');
-const PORT = process.env.PORT || 80
+const PORT = process.env.PORT || 3000
 
 morgan.token('type', function (req, res) { return req.headers['content-type'] })
 morgan.token('body', function (req, res) {return JSON.stringify(req.body)})
