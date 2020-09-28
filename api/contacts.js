@@ -26,7 +26,12 @@ module.exports = class ContactsAPI {
     }
     initMiddlewares() {
         this.server.use(express.json());
-        this.server.use(cors({original: 'http:localhost:3000'}))
+        this.server.use(cors({
+            "origin": "*",
+            "methods": "GET,PATCH,POST,DELETE",
+            "preflightContinue": false,
+            "optionsSuccessStatus": 204
+          }))
         this.server.use(
             morgan(function (tokens, req, res) {
             return [
