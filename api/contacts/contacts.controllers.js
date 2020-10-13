@@ -16,7 +16,7 @@ class ContactsController {
 			const contactId = req.params.contactId;
 			const contact = await contactModel.findOne({_id: contactId});
 			if(!contact) {
-				return res.status(404).json()
+				return res.sendStatus(400)
 			}
 			return res.status(200).json(contact)
 		} catch (err) {
@@ -29,9 +29,9 @@ class ContactsController {
 			const contactId = req.params.contactId;
 			const deleteContact = await contactModel.findByIdAndDelete(contactId);
 			if(!contactId) {
-				return res.status(404).json()
+				return res.sendStatus(404)
 			}
-			return res.status(204).json()
+			return res.sendStatus(204)
 		} catch (err) {
 			next(err);
 		}
@@ -42,7 +42,7 @@ class ContactsController {
 			const contactId = req.params.contactId;
 			const updateResult = await contactModel.findByIdAndUpdate(contactId, req.body);
 			if(!updateResult) {
-				return res.status(404).json();
+				return res.sendStatus(404)
 			}
 			return res.status(204).json(updateResult)
 		} catch (err) {

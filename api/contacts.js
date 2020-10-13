@@ -50,7 +50,14 @@ module.exports = class ContactsAPI {
           }))
     }
     async initDataBase() {
-        mongoose.connect(MONGODB_URL)
+        try {
+            mongoose.connect(MONGODB_URL)
+        } catch(err) {
+            if(err) {
+                console.log("Connection with error")
+                process.exit(1)
+            }
+        }
     }
     initRoutes() {
         this.server.use('/api/contacts', contactsRoutes);
