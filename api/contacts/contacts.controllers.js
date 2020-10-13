@@ -1,93 +1,59 @@
 const Joi = require('joi');
-const path = require('path');
-const fs = require('fs');
-const { promises: fsPromises } = fs;
-const contactsPath = path.join(__dirname, '../db/contacts.json');
+const contactModel = require('./contacts.model');
 
 class ContactsController {
-	get getContactById() {
-		return this._getContactById.bind(this);
-	}
-
-	get deleteContact() {
-		return this._deleteContact.bind(this);
-	}
-
-	get updateContact() {
-		return this._updateContact.bind(this);
-    }
-    
-    get addContact() {
-        return this._addContact.bind(this)
-    }
-
-	listContacts(req, res, next) {
-		fsPromises.readFile(contactsPath, 'utf-8').then((data) => res.status(200).send(JSON.parse(data)));
-	}
-
-	async _getContactById(req, res, next) {
+	async listContacts(req, res, next) {
 		try {
-            const objData = await this.getData();
-			const targetContactIndex = await this.findId(res, req.params.contactId, objData);
-			if (targetContactIndex === undefined) {
-				return;
+			const contacts = await contactModel.find();
+			return res.status(200).json(contacts)
+		}catch(err) {
+			next(err)
+		}
+	}
+
+	async getContactById(req, res, next) {
+		try {
+			const contactId = req.params.contactId;
+			const contact = await contactModel.findOne({_id: contactId});
+			if(!contact) {
+				return res.status(404).json()
 			}
-			const responseItem = await objData[targetContactIndex];
-			return res.status(200).send(JSON.stringify(responseItem));
+			return res.status(200).json(contact)
 		} catch (err) {
 			next(err);
 		}
 	}
 
-	async _deleteContact(req, res, next) {
+	async deleteContact(req, res, next) {
 		try {
-			const objData = await this.getData();
-			const targetContactIndex = await this.findId(res, req.params.contactId, objData);
-			if (targetContactIndex === undefined) {
-				return;
+			const contactId = req.params.contactId;
+			const deleteContact = await contactModel.findByIdAndDelete(contactId);
+			if(!contactId) {
+				return res.status(404).json()
 			}
-			const filteredData = objData.filter((_, idx) => idx !== targetContactIndex);
-			const result = await fsPromises.writeFile(contactsPath, JSON.stringify(filteredData));
-			return res.status(200).send({ message: 'contact deleted' });
+			return res.status(204).json()
 		} catch (err) {
 			next(err);
 		}
 	}
 
-	async _updateContact(req, res, next) {
+	async updateContact(req, res, next) {
 		try {
-			const objData = await this.getData();
-			const targetContactIndex = await this.findId(res, req.params.contactId, objData);
-			if (targetContactIndex === undefined) {
-				return;
+			const contactId = req.params.contactId;
+			const updateResult = await contactModel.findByIdAndUpdate(contactId, req.body);
+			if(!updateResult) {
+				return res.status(404).json();
 			}
-			objData[targetContactIndex] = {
-				...objData[targetContactIndex],
-				...req.body
-			};
-			const result = await fsPromises.writeFile(contactsPath, JSON.stringify(objData));
-			return res.status(200).send(objData[targetContactIndex]);
+			return res.status(204).json(updateResult)
 		} catch (err) {
 			next(err);
 		}
 	}
 
-	async _addContact(req, res, next) {
-		const addID = function(arr) {
-			const item = arr[arr.length - 1];
-			const id = item.id + 1;
-			return id;
-		};
+	async addContact(req, res, next) {
 		try {
-			const objData = await this.getData();
-			const newContact = {
-				...req.body,
-				id: addID(objData)
-			};
-			objData.push(newContact);
-			const updateStr = await JSON.stringify(objData);
-			const result = await fsPromises.writeFile(contactsPath, updateStr);
-			return res.status(200).send(newContact);
+			const contact = await contactModel.create(req.body);
+			return res.status(201).json(contact)
 		} catch (err) {
 			next(err);
 		}
@@ -97,7 +63,9 @@ class ContactsController {
 		const addContactRules = Joi.object({
 			name: Joi.string().required(),
 			email: Joi.string().required(),
-			phone: Joi.string().required()
+			phone: Joi.string().required(),
+			subscription: Joi.string().required(),
+			password: Joi.string().required(),
 		});
 
 		const result = addContactRules.validate(req.body);
@@ -111,7 +79,10 @@ class ContactsController {
 		const updateContactRules = Joi.object({
 			name: Joi.string(),
 			email: Joi.string(),
-			phone: Joi.string()
+			phone: Joi.string(),
+			subscription: Joi.string(),
+			password: Joi.string(),
+			token: Joi.string()
 		});
 
 		const result = updateContactRules.validate(req.body);
@@ -119,35 +90,6 @@ class ContactsController {
 			res.status(400).send(`{message: ${result.error.message}}`);
 		}
 		next();
-	}
-
-	async getData(next) {
-        try {
-            const data = await fsPromises.readFile(contactsPath, 'utf-8');
-            const objData = JSON.parse(data);
-            return objData;
-        } catch (err) {
-            next(err)
-        }
-		
-	}
-
-	findId(res, contactId, arr) {
-		const currentRequestId = parseInt(contactId);
-		const targetContactIndex = arr.findIndex((contact) => contact.id === currentRequestId);
-		if (targetContactIndex === -1) {
-			throw new ValidationError('User not found');
-		}
-		return targetContactIndex;
-	}
-}
-
-class ValidationError extends Error {
-	constructor(message) {
-		super(message);
-
-		this.status = 404;
-		delete this.stack;
 	}
 }
 

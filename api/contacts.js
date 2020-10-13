@@ -2,9 +2,13 @@ const express = require('express');
 const cors = require('cors')
 const contactsRoutes = require('./contacts/contacts.routes');
 const morgan = require('morgan');
+require('dotenv').config();
 const fs =  require('fs');
 const path = require('path');
+const mongoose = require('mongoose')
 const PORT = process.env.PORT || 3000
+const MONGODB_URL = process.env.MONGODB_URL
+
 
 morgan.token('type', function (req, res) { return req.headers['content-type'] })
 morgan.token('body', function (req, res) {return JSON.stringify(req.body)})
@@ -19,6 +23,7 @@ module.exports = class ContactsAPI {
         this.initServer();
         this.initMiddlewares();
         this.initRoutes();
+        this.initDataBase();
         this.startListen();
     }
     initServer() {
@@ -43,6 +48,9 @@ module.exports = class ContactsAPI {
           {
             stream: fs.createWriteStream(path.join(__dirname, './log/access.log'), { flags: 'a' })
           }))
+    }
+    async initDataBase() {
+        mongoose.connect(MONGODB_URL)
     }
     initRoutes() {
         this.server.use('/api/contacts', contactsRoutes);
