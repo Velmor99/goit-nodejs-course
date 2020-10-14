@@ -2,11 +2,9 @@
   "name": "01-node-basics",
   "version": "1.0.0",
   "description": "Hello world",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js",
-    "dev": "nodemon localhost 8080"
+    "start": "npm i && node api/server.js"
   },
   "repository": {
     "type": "git",
@@ -22,6 +20,12 @@
     "nodemon": "^2.0.4"
   },
   "dependencies": {
-    "yargs": "^16.0.3"
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "joi": "^17.2.1",
+    "mongodb": "^3.6.2",
+    "mongoose": "^5.10.7",
+    "morgan": "^1.10.0"
   }
 }
