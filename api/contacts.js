@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors')
 const contactsRoutes = require('./contacts/contacts.routes');
+const userRoutes = require('./users/users.router')
 const morgan = require('morgan');
 require('dotenv').config();
 const fs =  require('fs');
@@ -51,7 +52,14 @@ module.exports = class ContactsAPI {
     }
     async initDataBase() {
         try {
-            mongoose.connect(MONGODB_URL)
+            const opts = {
+                useFindAndModify: true,
+                useCreateIndex: true,
+                useNewUrlParser: true,
+                useUnifiedTopology: true
+            }
+            mongoose.connect(MONGODB_URL, opts);
+            console.log('DB Connected');
         } catch(err) {
             if(err) {
                 console.log("Connection with error")
@@ -61,6 +69,7 @@ module.exports = class ContactsAPI {
     }
     initRoutes() {
         this.server.use('/api/contacts', contactsRoutes);
+        this.server.use('/api/auth', userRoutes);
     }
     startListen() {
         this.server.listen(PORT, () => {
