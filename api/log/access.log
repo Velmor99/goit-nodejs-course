@@ -77,3 +77,40 @@ PUT /api/auth/current 404 155 - 0.345 ms application/json  {"email":"dalas@mail.
 GET /api/auth/current 200 240 - 99.027 ms application/json  {"email":"dalas@mail.com","password":"dollar"}
 GET /api/auth/logout 404 154 - 0.214 ms application/json  {"email":"dalas@mail.com","password":"dollar"}
 PUT /api/auth/logout 200 21 - 101.701 ms application/json  {"email":"dalas@mail.com","password":"dollar"}
+POST /api/auth/register 500 472 - 143.459 ms application/json  {"email":"volgagaz24100@gmail.com","password":"gavka133"}
+POST /api/auth/register 409 35 - 50.179 ms application/json  {"email":"volgagaz24100@gmail.com","password":"gavka133"}
+POST /api/auth/register 500 472 - 102.793 ms application/json  {"email":"volgagaz24100@gmail.com","password":"gavka133"}
+POST /api/auth/register 500 1488 - 907.735 ms application/json  {"email":"volgagaz24100@gmail.com","password":"gavka133"}
+POST /api/auth/register 500 1487 - 866.417 ms application/json  {"email":"volgagaz24100@gmail.com","password":"gavka133"}
+POST /api/auth/register 500 1485 - 795.598 ms application/json  {"email":"volgagaz24100@gmail.com","password":"gavka133"}
+POST /api/auth/register 500 1488 - 809.034 ms application/json  {"email":"volgagaz24100@gmail.com","password":"gavka133"}
+POST /api/auth/register 500 598 - 146.079 ms application/json  {"email":"volgagaz24100@gmail.com","password":"gavka133"}
+POST /api/auth/register 500 1488 - 817.247 ms application/json  {"email":"volgagaz24100@gmail.com","password":"gavka133"}
+POST /api/auth/register 500 1487 - 679.008 ms application/json  {"email":"volgagaz24100@gmail.com","password":"gavka133"}
+POST /api/auth/register 500 1488 - 781.006 ms application/json  {"email":"volgagaz24100@gmail.com","password":"gavka133"}
+POST /api/auth/register 500 1489 - 808.501 ms application/json  {"email":"volgagaz24100@gmail.com","password":"gavka133"}
+POST /api/auth/register 200 44 - 2008.939 ms application/json  {"email":"volgagaz24100@gmail.com","password":"gavka133"}
+POST /api/auth/login 404 154 - 2.126 ms application/json  {"email":"volgagaz24100@gmail.com","password":"gavka133"}
+PUT /api/auth/login 200 35 - 54.708 ms application/json  {"email":"volgagaz24100@gmail.com","password":"gavka133"}
+GET /auth/verify/a2af60e9-241b-407f-8e86-fe1ec39a8f1a 404 187 - 0.937 ms   {}
+PUT /api/auth/login 500 367 - 67.125 ms application/json  {"email":"volgagaz24100@gmail.com","password":"gavka133"}
+POST /api/auth/register 200 44 - 1811.752 ms application/json  {"email":"volgagaz24100@gmail.com","password":"gavka133"}
+PUT /api/auth/login 200 35 - 50.782 ms application/json  {"email":"volgagaz24100@gmail.com","password":"gavka133"}
+GET /api/auth/verify/188eadf9-97cb-4fb1-9d66-87fb71140113 200 18 - 47.466 ms   {}
+GET /api/auth/verify/188eadf9-97cb-4fb1-9d66-87fb71140113 304  - 45.168 ms   {}
+GET /api/auth/verify/188eadf9-97cb-4fb1-9d66-87fb71140113 304  - 63.558 ms   {}
+GET /api/auth/verify/188eadf9-97cb-4fb1-9d66-87fb71140113 304  - 66.142 ms   {}
+GET /api/auth/verify/188eadf9-97cb-4fb1-9d66-87fb71140113 200 31 - 182.878 ms   {}
+PUT /api/auth/login 200 35 - 62.275 ms application/json  {"email":"volgagaz24100@gmail.com","password":"gavka133"}
+PUT /api/auth/login 200 35 - 77.757 ms application/json  {"email":"volgagaz24100@gmail.com","password":"gavka133"}
+PUT /api/auth/login 200 35 - 112.356 ms application/json  {"email":"volgagaz24100@gmail.com","password":"gavka133"}
+PUT /api/auth/login 200 35 - 77.436 ms application/json  {"email":"volgagaz24100@gmail.com","password":"gavka133"}
+PUT /api/auth/login 200 251 - 141.713 ms application/json  {"email":"volgagaz24100@gmail.com","password":"gavka133"}
+PUT /api/auth/all 404 151 - 2.279 ms application/json  {"email":"volgagaz24100@gmail.com","password":"gavka133"}
+GET /api/auth/all 200 245 - 217.961 ms application/json  {"email":"volgagaz24100@gmail.com","password":"gavka133"}
+GET /api/auth/register 404 156 - 3.749 ms application/json  {"email":"volgagaz24100@gmail.com","password":"gavka133"}
+POST /api/auth/register 200 44 - 1811.272 ms application/json  {"email":"volgagaz24100@gmail.com","password":"gavka133"}
+GET /api/auth/verify/18d94696-8d31-4840-8fb0-e1c3e8e5463a 200 31 - 126.444 ms   {}
+POST /api/auth/login 404 154 - 0.257 ms application/json  {"email":"volgagaz24100@gmail.com","password":"gavka133"}
+PUT /api/auth/login 200 251 - 111.137 ms application/json  {"email":"volgagaz24100@gmail.com","password":"gavka133"}
+GET /api/auth/verify/18d94696-8d31-4840-8fb0-e1c3e8e5463a 200 18 - 49.984 ms   {}

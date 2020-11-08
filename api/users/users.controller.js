@@ -2,6 +2,10 @@ const Joi = require('joi');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const userModel = require('./user.model');
+const nodemailer = require('nodemailer');
+const {v4: uuid} = require('uuid');
+const { ObjectId } = require('mongodb');
+
 
 class UserController {
     async register(req, res, next) {
@@ -12,10 +16,12 @@ class UserController {
                 return res.status(409).send({message: 'User is already exist'})
             }
             const hashPassword = await bcrypt.hash(password, 5);
-            await userModel.create({
+            const createdUser = await userModel.create({
                 email,
                 password: hashPassword,
             });
+
+            await UserController.sendVerifyEmail(createdUser)
 
             return res.send({user: {
                 email,
@@ -33,9 +39,14 @@ class UserController {
                 return res.status(404).send({message: 'User was not found'});
             }
             const isPasswordValid = await bcrypt.compare(password, user[0].password);
-            console.log(isPasswordValid)
+
             if(!isPasswordValid) {
                 return res.send({message: 'Authentefication failed.'})
+            }
+
+
+            if(user[0].status != 'verified') {
+                return res.send({message: 'User was not verified'})
             }
 
             const token = await jwt.sign({id: user[0].id}, process.env.TOKEN_SECRET, {expiresIn: '12h'});
@@ -43,6 +54,21 @@ class UserController {
                 token
             }, {new: true});
             return res.send(UserController.validateUserResponce([updateUser]));
+        }catch(err) {
+            next(err)
+        }
+    }
+
+    async verificationEmail(req, res, next) {
+        try{
+            const verifyString = req.params.verificationToken;
+            const userToVerify = await userModel.findOne({verificationToken: verifyString});
+            console.log(userToVerify)
+            if(!userToVerify) {
+                return res.send('User was not found');
+            }
+            await UserController.verifyUser(userToVerify._id);
+            return res.send({message: 'User was verified'})
         }catch(err) {
             next(err)
         }
@@ -146,6 +172,52 @@ class UserController {
             return res.status(400).send({message: error.details[0].message})
         }
         next()
+    }
+
+    static async sendVerifyEmail(user) {
+        const {id} = user._id
+        const verificationString = await UserController.saveVerifyString(ObjectId(id))
+
+        const transporter = nodemailer.createTransport({
+            // service: "gmail",
+            host: "smtp.gmail.com",
+            port: 587,
+            secure: false, // true for 587, false for other ports
+            requireTLS: true,
+            auth: {
+              user: process.env.MAIN_POST,
+              pass: process.env.PASSWORD_POST,
+            },
+        });
+
+        const verificationURL = `http://localhost:3000/api/auth/verify/${verificationString}`;
+
+        const mailOptions = {
+            from: process.env.MAIN_POST,
+            to: user.email,
+            subject: 'Email Verification Test',
+            html: `<a href='${verificationURL}'>Click here for verification</a>`
+        }
+
+        return transporter.sendMail(mailOptions);
+    }
+
+    static async saveVerifyString(userId) {
+        const string = uuid();
+        console.log(userId)
+        const {verificationToken} = await userModel.findByIdAndUpdate(userId, {
+            verificationToken: string
+        }, {new: true});
+
+        return verificationToken
+    }
+
+    static async verifyUser(userId) {
+        await userModel.findByIdAndUpdate(userId, {
+            status: 'verified',
+            verificationToken: null,
+        })
+        return 'success'
     }
 }
 

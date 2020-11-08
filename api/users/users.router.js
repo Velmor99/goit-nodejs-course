@@ -2,7 +2,9 @@ const {Router} = require('express')
 const userRouter = Router();
 const UserController = require('./users.controller')
 
-userRouter.get('/test', (req, res, next) => res.send('ok'))
+userRouter.get('/test', (req, res, next) => res.send('ok'));
+
+userRouter.get('/verify/:verificationToken', UserController.verificationEmail)
 
 userRouter.post('/register', UserController.validateCreateUser, UserController.register);
 
